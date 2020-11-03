@@ -1,28 +1,11 @@
-// Importing inquirer and mysql modules
+// Importing inquirer and orm modules
 const inquirer = require("inquirer");
-const mysql = require("mysql");
-
-// Setting up connection config
-const connection = mysql.createConnection({
-    host: "localhost",
-    // Your port; if not 3306
-    port: 3306,
-    // Your username
-    user: "root",
-    // Your password
-    password: "mysql",
-    database: "employees_db"
-});
-
-// Connecting to the db
-connection.connect(function(err) {
-    if (err) throw err;
-    console.log("connected as id " + connection.threadId);
-    // Once connected call main
-    main();
-});
+const orm = require("./config/orm");
 
 // Main function
 function main() {
-    connection.end();
+    
 }
+
+// Code flow begin by calling main
+main();
