@@ -48,6 +48,24 @@ const orm = {
         WHERE manager_id = ?;`, response.manager_id);
         console.table(result);
     },
+    // Method to view employees by role
+    viewEmployeesByRole: async function() {
+        // Query roles
+        const roles = await query(`SELECT id, title FROM role;`);
+        const roleChoices = roles.map(function(role) {
+            return {name: role.title, value: role.id};
+       });
+        // Prompt which role
+        const response = await inquirer.prompt({
+            type: "list", message: "Which role?", name: "role_id",
+            choices: roleChoices
+        });
+        // Query
+        const result = await query(`SELECT id, CONCAT(first_name, ' ', last_name) AS name
+        FROM employee
+        WHERE role_id = ?;`, response.role_id);
+        console.table(result);
+    },
     // Method to add an employee
     addEmployee: async function() {
         // Query roles
