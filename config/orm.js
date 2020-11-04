@@ -4,6 +4,8 @@ const connection = require("./connection");
 const util = require("util");
 // Importing console.table module
 require("console.table");
+// Importing the inquirer modules
+const inquirer = require("inquirer");
 
 // Promisify the connection query method
 const query = util.promisify(connection.query).bind(connection);
@@ -39,6 +41,16 @@ const orm = {
         // Query
         const result = await query("SELECT * FROM department ORDER BY id;");
         console.table(result);
+    },
+    // Method to add a department
+    addDepartment: async function() {
+        // Prompt information
+        const response = await inquirer.prompt({
+            type: "input", message: "What is the name of the department?", name: "name"
+        });
+        // Query
+        const result = await query("INSERT INTO department (name) VALUES (?);", response.name.trim());
+        console.log("Successfully added department");
     },
     // Method to exit
     exit: function() {
