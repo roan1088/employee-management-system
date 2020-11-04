@@ -95,6 +95,28 @@ const orm = {
         VALUES (?, ?, ?, ?);`, [response.first_name.trim(), response.last_name.trim(), response.role_id, response.manager_id]);
         console.log("Successfully added employee");
     },
+    // Method to update an employee's role
+    updateEmployeeRole: async function() {
+        // Query roles
+        const roles = await query("SELECT id, title FROM role ORDER BY id;");
+        const roleChoices = roles.map(function(role) {
+             return {name: role.title, value: role.id};
+        });
+        // Query employees
+        const employees = await query("SELECT id, CONCAT(first_name, ' ', last_name) AS name FROM employee;");
+        const employeeChoices = employees.map(function(employee) {
+             return {name: employee.name, value: employee.id};
+        });
+        // Prompt information
+        const response = await inquirer.prompt([{
+            type: "list", message: "Which employee?", name: "id", choices: employeeChoices
+        }, {
+            type: "list", message: "What is the employee's new role?", name: "role_id", choices: roleChoices
+        }]);
+        // Query
+        const result = await query(`UPDATE employee SET role_id = ? WHERE id = ?;`, [response.role_id, response.id]);
+        console.log("Successfully updated employee's role");
+    },
     // Method to view all roles
     viewAllRoles: async function() {
         // Query
