@@ -134,6 +134,26 @@ const orm = {
         const result = await query(`UPDATE employee SET manager_id = ? WHERE id = ?;`, [response.manager_id, response.id]);
         console.log("Successfully updated employee's manager");
     },
+    // Method to remove an employee
+    removeEmployee: async function() {
+        // Query employees
+        const employees = await query("SELECT id, CONCAT(first_name, ' ', last_name) AS name FROM employee;");
+        const employeeChoices = employees.map(function(employee) {
+             return {name: employee.name, value: employee.id};
+        });
+        // Prompt information
+        const response = await inquirer.prompt([{
+            type: "list", message: "Which employee to remove?", name: "id", choices: employeeChoices
+        }, {
+            type: "list", message: "Are you sure?", name: "sure", choices: ["yes", "no"]
+        }]);
+        // Check if user is sure
+        if (response.sure === "yes") {
+            // Query
+            const result = await query(`DELETE FROM employee WHERE id = ?;`, response.id);
+            console.log("Successfully removed employee");
+        }
+    },
     // Method to view all roles
     viewAllRoles: async function() {
         // Query
