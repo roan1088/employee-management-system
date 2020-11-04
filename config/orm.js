@@ -2,6 +2,8 @@
 const connection = require("./connection");
 // Importing the util module
 const util = require("util");
+// Importing console.table module
+require("console.table");
 
 // Promisify the connection query method
 const query = util.promisify(connection.query).bind(connection);
