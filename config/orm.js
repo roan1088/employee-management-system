@@ -36,6 +36,27 @@ const orm = {
         ORDER BY ID;`);
         console.table(result);
     },
+    // Method to add a role
+    addRole: async function() {
+        // Query departments
+        const departments = await query("SELECT * FROM department ORDER BY id;");
+        const departmentChoices = departments.map(function(department) {
+            return {name: department.name, value: department.id};
+        });
+        // Prompt information
+        const response = await inquirer.prompt([{
+            type: "input", message: "What is the title of the role?", name: "title"
+        }, {
+            type: "input", message: "What is the salary of the role?", name: "salary"
+        }, {
+            type: "list", message: "What is the department of the role?", name: "department_id",
+            choices: departmentChoices
+        }]);
+        // Query
+        const result = await query(`INSERT INTO role (title, salary, department_id)
+        VALUES (?, ?, ?);`, [response.title.trim(), response.salary, response.department_id]);
+        console.log("Successfully added role");
+    },
     // Method to view all departments
     viewAllDepartments: async function() {
         // Query
