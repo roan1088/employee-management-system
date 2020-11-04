@@ -117,6 +117,23 @@ const orm = {
         const result = await query(`UPDATE employee SET role_id = ? WHERE id = ?;`, [response.role_id, response.id]);
         console.log("Successfully updated employee's role");
     },
+    // Method to update an employee's manager
+    updateEmployeeManager: async function() {
+        // Query employees
+        const employees = await query("SELECT id, CONCAT(first_name, ' ', last_name) AS name FROM employee;");
+        const employeeChoices = employees.map(function(employee) {
+             return {name: employee.name, value: employee.id};
+        });
+        // Prompt information
+        const response = await inquirer.prompt([{
+            type: "list", message: "Which employee?", name: "id", choices: employeeChoices
+        }, {
+            type: "list", message: "Who is the employee's new manger?", name: "manager_id", choices: employeeChoices
+        }]);
+        // Query
+        const result = await query(`UPDATE employee SET manager_id = ? WHERE id = ?;`, [response.manager_id, response.id]);
+        console.log("Successfully updated employee's manager");
+    },
     // Method to view all roles
     viewAllRoles: async function() {
         // Query

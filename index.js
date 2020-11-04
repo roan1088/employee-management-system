@@ -13,7 +13,7 @@ async function main() {
             type: "list",
             message: "What would you like to do?",
             name: "action",
-            choices: ["View All Employees", "View Employees by Manager", "View Employees by Role", "Add an Employee", "Update an Employee's Role", "View All Roles", "Add a Role", "View All Departments", "Add a Department", "Exit"]
+            choices: ["View All Employees", "View Employees by Manager", "View Employees by Role", "Add an Employee", "Update an Employee's Role", "Update an Employee's Manager", "View All Roles", "Add a Role", "View All Departments", "Add a Department", "Exit"]
         });
         // Set action to users response
         action = response.action
@@ -34,6 +34,9 @@ async function main() {
                 break;
             case "Update an Employee's Role":
                 await orm.updateEmployeeRole();
+                break;
+            case "Update an Employee's Manager":
+                await orm.updateEmployeeManager();
                 break;
             case "View All Roles":
                 await orm.viewAllRoles();
