@@ -28,6 +28,26 @@ const orm = {
         ORDER BY id;`);
         console.table(result);
     },
+    // Method to view employees by manager
+    viewEmployeesByManager: async function() {
+        // Query managers
+        const managers = await query(`SELECT e.id, CONCAT(e.first_name, ' ', e.last_name) AS name
+        FROM employee INNER JOIN employee AS e ON employee.manager_id = e.id
+        GROUP BY employee.manager_id;`);
+        const managerChoices = managers.map(function(manager) {
+            return {name: manager.name, value: manager.id};
+       });
+        // Prompt which manager
+        const response = await inquirer.prompt({
+            type: "list", message: "Which manager?", name: "manager_id",
+            choices: managerChoices
+        });
+        // Query
+        const result = await query(`SELECT id, CONCAT(first_name, ' ', last_name) AS name
+        FROM employee
+        WHERE manager_id = ?;`, response.manager_id);
+        console.table(result);
+    },
     // Method to add an employee
     addEmployee: async function() {
         // Query roles
