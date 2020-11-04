@@ -28,6 +28,35 @@ const orm = {
         ORDER BY id;`);
         console.table(result);
     },
+    // Method to add an employee
+    addEmployee: async function() {
+        // Query roles
+        const roles = await query("SELECT id, title FROM role ORDER BY id;");
+        const roleChoices = roles.map(function(role) {
+             return {name: role.title, value: role.id};
+        });
+        // Query managers
+        const managers = await query("SELECT id, CONCAT(first_name, ' ', last_name) AS name FROM employee ORDER BY id;");
+        const managerChoices = managers.map(function(manager) {
+             return {name: manager.name, value: manager.id};
+        });
+        // Add a choice for no manager
+        managerChoices.push({name: "None", value: null})
+        // Prompt information
+        const response = await inquirer.prompt([{
+            type: "input", message: "What is the employee's first name?", name: "first_name"
+        }, {
+            type: "input", message: "What is the employee's last name?", name: "last_name"
+        }, {
+            type: "list", message: "What is the employee's role?", name: "role_id", choices: roleChoices
+        }, {
+            type: "list", message: "Who is the employee's manager?", name: "manager_id", choices: managerChoices
+        }]);
+        // Query
+        const result = await query(`INSERT INTO employee (first_name, last_name, role_id, manager_id)
+        VALUES (?, ?, ?, ?);`, [response.first_name.trim(), response.last_name.trim(), response.role_id, response.manager_id]);
+        console.log("Successfully added employee");
+    },
     // Method to view all roles
     viewAllRoles: async function() {
         // Query
