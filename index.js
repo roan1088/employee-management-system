@@ -13,7 +13,7 @@ async function main() {
             type: "list",
             message: "What would you like to do?",
             name: "action",
-            choices: ["View All Employees", "View All Departments", "Exit"]
+            choices: ["View All Employees", "View All Roles", "View All Departments", "Exit"]
         });
         // Set action to users response
         action = response.action
@@ -22,6 +22,9 @@ async function main() {
         switch(action) {
             case "View All Employees":
                 await orm.viewAllEmployees();
+                break;
+            case "View All Roles":
+                await orm.viewAllRoles();
                 break;
             case "View All Departments":
                 await orm.viewAllDepartments();

@@ -26,6 +26,14 @@ const orm = {
         ORDER BY id;`);
         console.table(result);
     },
+    // Method to view all roles
+    viewAllRoles: async function() {
+        // Query
+        const result = await query(`SELECT role.id, role.title, department.name AS department, role.salary
+        FROM role INNER JOIN department ON role.department_id = department.id
+        ORDER BY ID;`);
+        console.table(result);
+    },
     // Method to view all departments
     viewAllDepartments: async function() {
         // Query
