@@ -18,7 +18,7 @@ To install necessary dependencies, run the following command:
 npm i
 ```
 
-To create the necessary database, run schema.sql in the db folder
+To create the necessary database, run schema.sql in the db folder. If you need some dummy data, run seed.sql as well.
 
 To configure the connection to the database, open connection.js in the config folder and setup your port, user and password
 ```javascript
@@ -32,6 +32,8 @@ password: "mysql",
 
 ## Usage
 Type `npm start` into your terminal to begin
+
+![Usage demo](./images/usage-demo.gif)
 
 ## License
 This project is licensed under the MIT license.
